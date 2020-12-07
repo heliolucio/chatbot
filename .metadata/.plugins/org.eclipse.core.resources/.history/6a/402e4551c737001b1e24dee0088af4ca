@@ -1,0 +1,140 @@
+package br.com.fiap.chatbot.telegram;
+
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+public class ChatTest extends TelegramLongPollingBot {
+
+	String contexto = "inicio";
+	String acao = "";
+	
+	public void enviarMensagem(long idTelegram, String mensagem) {
+		SendMessage send = new SendMessage();
+		send.setChatId(Long.toString(idTelegram));
+		send.setText(mensagem);
+
+		try {
+			execute(send);
+		} catch (TelegramApiException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onUpdateReceived(Update update) {
+
+		String nome = update.getMessage().getFrom().getFirstName();
+		long idTelegram = update.getMessage().getChatId();
+		String mensagem = update.getMessage().getText();
+
+		System.out.println("Contexto: " + contexto);
+		System.out.println("Mensagem: " + mensagem);
+
+		if (contexto == "inicio" || mensagem.contains("menu inicial")) {
+			System.out.println("Entrou inicio");
+			SendMessage send = new SendMessage();
+			send.setChatId(Long.toString(idTelegram));
+			send.setText("Olá " + nome + ", seja bem vindo. Selecione uma opção: \n"
+					+ "1 - Consultar Saldo conta;\n"
+					+ "2 - Consultar dados bancário;\n"
+					+ "3 - Pesquisa de satisfação;\n");
+			try {
+				execute(send);
+				contexto = "";
+			} catch (TelegramApiException e) {
+				e.printStackTrace();
+			}
+		} else if(contexto == "menu") {
+			SendMessage send = new SendMessage();
+			Mensagem msg = new Mensagem();
+			send.setChatId(Long.toString(idTelegram));
+			send.setText(msg.mensagemMenu());
+			try {
+				execute(send);
+				contexto = "";
+			} catch (TelegramApiException e) {
+				e.printStackTrace();
+			}
+		}
+		else if (mensagem.contains("1") || contexto.contains("1")) {
+			try {
+				SendMessage send = new SendMessage();
+				Mensagem msg = new Mensagem();
+				send.setChatId(Long.toString(idTelegram));
+				
+				mensagem = "Seu saldo é de R$ 300,00.";
+				
+				send.setText(msg.mensagemMenu());
+				
+				enviarMensagem(idTelegram, mensagem);
+				execute(send);
+				contexto = "";
+			} catch (Exception e) {
+				mensagem = "Erro ao exibir saldo.";
+				e.printStackTrace();
+			}
+		} else if(mensagem.contains("2") || contexto.contains("2")) {
+			try {
+				SendMessage send = new SendMessage();
+				Mensagem msg = new Mensagem();
+				send.setChatId(Long.toString(idTelegram));
+				mensagem = "Banco XPTO.\n"
+						+ "Agência: 1333\n"
+						+ "Conta Corrente: 01122-3";
+				
+				send.setText(msg.mensagemMenu());
+				
+				enviarMensagem(idTelegram, mensagem);
+				execute(send);
+				contexto = "";
+			} catch (Exception e) {
+				mensagem = "Erro ao exibir dados bancário.";
+				e.printStackTrace();
+			}
+		} else if(mensagem.contains("3") || contexto.contains("3")) {
+				contexto = "primeira pergunta";
+				mensagem = "Vamos começar com a pesquisa? \n"
+						+ "É muito bom contar com a sua colaboração. Você gostou das consultas realizadas?\n\n"
+						+ "Responda S para SIM \n"
+						+ "Responda N para NÃO \n";
+				enviarMensagem(idTelegram, mensagem);
+		} else if(contexto.contains("primeira pergunta")) {
+			contexto = "segunda pergunta";
+			mensagem = "A interação com o chat foi boa?\n\n"
+					+ "Responda S para SIM \n"
+					+ "Responda N para NÃO \n";
+			enviarMensagem(idTelegram, mensagem);
+		}else if(contexto.contains("segunda pergunta")) {
+			contexto = "terceira pergunta";
+			mensagem = "Você já fez interação com chat em outro aplicativo, exemplo WhatsApp?\n\n"
+					+ "Responda S para SIM \n"
+					+ "Responda N para NÃO \n";
+			enviarMensagem(idTelegram, mensagem);
+		}else if(contexto.contains("terceira pergunta")) {
+			contexto = "quarta pergunta";
+			mensagem = "Você gostaria que tivesse menu de atualizar cadastro?\n\n"
+					+ "Responda S para SIM \n"
+					+ "Responda N para NÃO \n";
+			enviarMensagem(idTelegram, mensagem);
+		}else if(contexto.contains("quarta pergunta")) {
+			try {
+				mensagem = "Obrigado por participar da pesquisa de satisfação.";
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			enviarMensagem(idTelegram, mensagem);
+			contexto = "menu";
+		}
+	}
+
+	public String getBotUsername() {
+		return "chatbotpos_bot";
+	}
+
+	@Override
+	public String getBotToken() {
+		return "1497650382:AAG9WWBFtL8ul6qGGUHxajrrp9CezJ8lUsY";
+	}
+
+}

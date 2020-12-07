@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;br.com.fiap.chatbot.telegram.App&apos; to &apos;Main&apos;&#x0D;&#x0A;- Original project: &apos;telegram&apos;&#x0D;&#x0A;- Original element: &apos;br.com.fiap.chatbot.telegram.App&apos;&#x0D;&#x0A;- Renamed element: &apos;br.com.fiap.chatbot.telegram.Main&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;App&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src\/main\/java&lt;br.com.fiap.chatbot.telegram{App.java[App" matchStrategy="1" name="Main" qualified="false" references="true" similarDeclarations="false" stamp="1606586533803" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,25 @@
+package br.com.fiap.chatbot.telegram.dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import br.com.fiap.chatbot.telegram.entity.Saldo;
+
+public class SaldoDAO {
+	
+	private EntityManager entityManager;
+
+	public SaldoDAO(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+	
+	public List<Saldo> consultarSaldo(){
+		Query query = entityManager.createQuery("select s from Saldo s");
+		return query.getResultList();
+	}
+	
+	
+
+}

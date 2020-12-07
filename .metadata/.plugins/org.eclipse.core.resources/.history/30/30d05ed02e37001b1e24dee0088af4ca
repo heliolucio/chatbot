@@ -1,0 +1,11 @@
+package br.com.fiap.chatbot.telegram;
+
+public class Mensagem {
+	public String contexto;
+	public String acao;
+
+	public Mensagem(String contexto, String acao) {
+		this.contexto = contexto;
+		this.acao = acao;
+	}
+}

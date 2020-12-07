@@ -1,0 +1,76 @@
+package br.com.fiap.chatbot.telegram;
+
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+public class ChatTest extends TelegramLongPollingBot {
+
+	String contexto = "inicio";
+	String acao = "";
+	
+	public void enviarMensagem(long idTelegram, String mensagem) {
+		SendMessage send = new SendMessage();
+		send.setChatId(Long.toString(idTelegram));
+		send.setText(mensagem);
+
+		try {
+			execute(send);
+		} catch (TelegramApiException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onUpdateReceived(Update update) {
+
+		String nome = update.getMessage().getFrom().getFirstName();
+		long idTelegram = update.getMessage().getChatId();
+		String mensagem = update.getMessage().getText();
+
+		System.out.println("Contexto: " + contexto);
+		System.out.println("Mensagem: " + mensagem);
+
+		if (contexto == "Consultar" || mensagem.contains("Consultar")) {
+			System.out.println("Entrou inicio");
+			SendMessage send = new SendMessage();
+			send.setChatId(Long.toString(idTelegram));
+			send.setText("Olá " + nome + ", seja bem vindo. Selecione uma opção: \n"
+					+ "1 - Consultar Saldo conta;\n"
+					+ "2 - Consultar dados;\n");
+			try {
+				execute(send);
+				contexto = "";
+			} catch (TelegramApiException e) {
+				e.printStackTrace();
+			}
+		} else if (mensagem.contains("1") || contexto.contains("1")) {
+			System.out.println("Consulta saldo");
+			SendMessage send = new SendMessage();
+			send.setChatId(Long.toString(idTelegram));
+			
+			mensagem = "Seu saldo é de R$ 300,00.";
+
+			enviarMensagem(idTelegram, mensagem);
+			contexto = "saldo";
+		} else if(contexto.contains("saldo")) {
+			try {
+				mensagem = "Saldo exibido.";
+			} catch (Exception e) {
+				mensagem = "Erro ao exibir o saldo.";
+			}
+			enviarMensagem(idTelegram, mensagem);
+			contexto = "Consultar";
+		}
+	}
+
+	public String getBotUsername() {
+		return "chatbotpos_bot";
+	}
+
+	@Override
+	public String getBotToken() {
+		return "1497650382:AAG9WWBFtL8ul6qGGUHxajrrp9CezJ8lUsY";
+	}
+
+}

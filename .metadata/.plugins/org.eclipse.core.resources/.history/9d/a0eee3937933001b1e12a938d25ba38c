@@ -1,0 +1,17 @@
+package br.com.fiap.chatbot.telegram.dao;
+
+import javax.persistence.EntityManager;
+
+public class SaldoDAO {
+	
+	private EntityManager entityManager;
+
+	public SaldoDAO(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+	
+	
+	
+	
+
+}

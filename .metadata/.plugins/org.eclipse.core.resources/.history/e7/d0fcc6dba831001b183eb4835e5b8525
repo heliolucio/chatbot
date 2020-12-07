@@ -1,0 +1,25 @@
+package br.com.fiap.chatbot.telegram;
+
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+public class ChatTest extends TelegramLongPollingBot{
+
+	public void onUpdateReceived(Update update) {
+		
+		System.out.println(update.getMessage().getFrom().getFirstName() + ": " + update.getMessage().getText());
+		
+		SendMessage sendMessage = new SendMessage().setChatId(update.getMessage().getChatId());
+	} 
+
+	public String getBotUsername() {
+		return "chatbotpos_bot";
+	}
+
+	@Override
+	public String getBotToken() {
+		return "1497650382:AAG9WWBFtL8ul6qGGUHxajrrp9CezJ8lUsY";
+	}
+
+}

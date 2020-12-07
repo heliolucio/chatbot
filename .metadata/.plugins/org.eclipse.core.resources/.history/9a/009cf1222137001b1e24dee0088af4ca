@@ -1,0 +1,92 @@
+package br.com.fiap.chatbot.telegram;
+
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+public class ChatTest extends TelegramLongPollingBot {
+
+	String contexto = "inicio";
+	String acao = "";
+	
+	public void enviarMensagem(long idTelegram, String mensagem) {
+		SendMessage send = new SendMessage();
+		send.setChatId(Long.toString(idTelegram));
+		send.setText(mensagem);
+
+		try {
+			execute(send);
+		} catch (TelegramApiException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onUpdateReceived(Update update) {
+
+		String nome = update.getMessage().getFrom().getFirstName();
+		long idTelegram = update.getMessage().getChatId();
+		String mensagem = update.getMessage().getText();
+
+		System.out.println("Contexto: " + contexto);
+		System.out.println("Mensagem: " + mensagem);
+
+		if (contexto == "inicio" || mensagem.contains("menu inicial")) {
+			System.out.println("Entrou inicio");
+			SendMessage send = new SendMessage();
+			send.setChatId(Long.toString(idTelegram));
+			send.setText("Olá " + nome + ", seja bem vindo. Selecione uma opção: \n"
+					+ "1 - Consultar Saldo conta;\n"
+					+ "2 - Consultar dados;\n");
+			try {
+				execute(send);
+				contexto = "";
+			} catch (TelegramApiException e) {
+				e.printStackTrace();
+			}
+		} else if(contexto == "menu") {
+			SendMessage send = new SendMessage();
+			send.setText("1 - Consultar saldo conta;\n"
+					+ "2 - Consultar dados bancário;\n");
+		}
+		else if (mensagem.contains("1") || contexto.contains("1")) {
+			try {
+				SendMessage send = new SendMessage();
+				send.setChatId(Long.toString(idTelegram));
+				
+				mensagem = "Seu saldo é de R$ 300,00.";				
+			} catch (Exception e) {
+				mensagem = "Erro ao exibir saldo.";
+				e.printStackTrace();
+			}
+
+			enviarMensagem(idTelegram, mensagem);
+			contexto = "menu";
+		} else if(mensagem.contains("2") || contexto.contains("2")) {
+			try {
+				SendMessage send = new SendMessage();
+				send.setChatId(Long.toString(idTelegram));
+				mensagem = "Banco XPTO.\n"
+						+ "Agência: 1333\n"
+						+ "Conta Corrente: 01122-3";
+				enviarMensagem(idTelegram, mensagem);
+				contexto = "menu";
+			} catch (Exception e) {
+				mensagem = "Erro ao exibir dados bancário.";
+				e.printStackTrace();
+			}
+			enviarMensagem(idTelegram, mensagem);
+			contexto = "inicio";
+		}
+	}
+
+	public String getBotUsername() {
+		return "chatbotpos_bot";
+	}
+
+	@Override
+	public String getBotToken() {
+		return "1497650382:AAG9WWBFtL8ul6qGGUHxajrrp9CezJ8lUsY";
+	}
+
+}

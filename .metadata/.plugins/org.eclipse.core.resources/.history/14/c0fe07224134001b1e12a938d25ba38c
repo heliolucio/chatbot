@@ -1,0 +1,45 @@
+package br.com.fiap.chatbot.telegram.entity;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_saldo")
+public class Saldo implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private int idSaldo;
+	private String saldo;
+
+	public Saldo() {
+		super();
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_saldo")
+	public int getIdSaldo() {
+		return idSaldo;
+	}
+
+	public void setIdSaldo(int idSaldo) {
+		this.idSaldo = idSaldo;
+	}
+
+	@Column(name = "saldo")
+	public String getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(String saldo) {
+		this.saldo = saldo;
+	}
+
+}

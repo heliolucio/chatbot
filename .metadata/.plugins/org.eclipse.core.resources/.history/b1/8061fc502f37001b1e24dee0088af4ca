@@ -1,0 +1,5 @@
+package br.com.fiap.chatbot.telegram;
+
+public class Mensagem {
+	
+}

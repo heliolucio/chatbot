@@ -1,0 +1,18 @@
+package br.com.fiap.chatbot.telegram;
+
+public class Mensagem {
+
+	public String mensagemMenu() {
+		return "Selecione uma opção: \n "
+				+ "1 - Consultar saldo conta;\n"
+				+ "2 - Consultar dados bancário;\n"
+				+ "3 - Pesquisa de satisfação;\n";
+	}
+
+	public String mensagemSaldo() {
+		return "Banco XPTO.\n"
+				+ "Agência: 1333\n"
+				+ "Conta Corrente: 01122-3";
+	}
+	
+}
